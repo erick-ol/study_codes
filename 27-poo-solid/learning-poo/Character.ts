@@ -1,39 +1,47 @@
-// energy, life, attack, defense
-import prompt from 'prompt-sync';
-
-class Character {
+export default class Character {
   constructor(
     public name: string,
     public energy: number,
-    public life: number,
     public attack: number,
     public defense: number,
   ) {}
-}
 
-let sansa: Character;
-sansa = new Character('Sansa Stark', 100, 100, 20, 20);
+  status(): string {
+    return `Warrior:
+  Name: ${this.name}
+  Energy: ${this.energy.toFixed(1)}
+  Attack: ${this.attack.toFixed(1)}
+  Defense: ${this.defense.toFixed(1)}`;
+  }
 
-let teclado = prompt();
-let option: number = 0;
-while (option != 9) {
-  console.log('+========= Personagem =============+');
-  console.log('|1. Train attack                   |');
-  console.log('|2. Train defense                  |');
-  console.log('|3. Print attributes               |');
-  console.log('|9. Leave                          |');
-  console.log('+==================================+');
+  trainAttack(): void {
+    this.attack += Math.random() * 5;
+    this.energy -= Math.random() * 10;
+    if (this.attack > 100) {
+      this.attack = 100;
+    }
+  }
 
-  option = +teclado('Escolha uma ação: ');
+  trainDefense(): void {
+    this.defense += Math.random() * 5;
+    this.energy -= Math.random() * 10;
+    if (this.defense > 100) {
+      this.defense = 100;
+    }
+  }
 
-  switch (option) {
-    case 1:
-      sansa.attack += 2;
-      break;
-    case 3:
-      console.log('sansa :>> ', sansa);
-      break;
-    default:
-      break;
+  rest(hours: number): void {
+    this.energy += hours * Math.random() * 10;
+    if (this.energy > 100) this.energy = 100;
+  }
+
+  battle(): number {
+    const energyCost = Math.random() * 100;
+    this.energy -= energyCost;
+    return energyCost;
+  }
+
+  isAlive(): boolean {
+    return this.energy >= 0;
   }
 }
